@@ -10,6 +10,8 @@
         'class' => 's-example-basic-single',
         'options' => $users,
     ));
+    // debug($users);
+    // exit;
     echo $this->Form->input('message', array('type'=>'text'));
     echo $this->Form->input('recipient_id', array(
         'type' => 'hidden',
@@ -20,6 +22,8 @@
 </form>
 
 <div id="response"></div>
+
+
 </div>
 <div class="actions">
 	    <h3><?php echo __('Actions'); ?></h3>
@@ -29,7 +33,7 @@
                 
                 <li>
                 <?php
-                    echo $this->HTML->link('Message Board', array('controller'=>'messages', 'action'=>'index'));
+                    echo $this->HTML->link('Message Board', array('controller'=>'messages', 'action'=>'index1'));
                 ?>
                 </li>
                 <li>
@@ -54,7 +58,7 @@
     
 
 
-<script>
+<!-- <script>
 function sendMessage() {
     var formData = $('#messageForm').serialize(); // Serialize the form data
     var baseUrl = '<?php echo $this->Html->url('/'); ?>';
@@ -79,4 +83,4 @@ function sendMessage() {
 }
 </script>
 
- 
+  -->

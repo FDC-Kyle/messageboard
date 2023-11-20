@@ -27,7 +27,7 @@ img{ max-width:100%;}
   font-size: 21px;
   margin: auto;
 }
-.srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
+.srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:40%; padding:2px 0 4px 6px; background:none;}
 .srch_bar .input-group-addon button {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
@@ -66,7 +66,7 @@ img{ max-width:100%;}
 }
 .received_msg {
   display: inline-block;
-  padding: 0 0 0 10px;
+  padding: 0px;
   vertical-align: top;
   width: 92%;
  }
@@ -78,6 +78,8 @@ img{ max-width:100%;}
   margin: 0;
   padding: 5px 10px 5px 12px;
   width: 100%;
+  word-wrap: break-word;
+ 
 }
 .time_date {
   color: #747474;
@@ -99,6 +101,8 @@ img{ max-width:100%;}
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
+  word-wrap: break-word;
+ 
 }
 .outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
 .sent_msg {

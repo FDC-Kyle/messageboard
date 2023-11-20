@@ -1,5 +1,5 @@
 <div class="users index">
-    <h2><?php echo __('Your Profile'); ?></h2>
+    <h2><?php echo __('Profile page'); ?></h2>
 	
 
     
@@ -82,7 +82,12 @@
                                             </div>
                                             <div class="col-md-8 col-6">
 											<?php
-											 echo ($userSpecificData['User']['gender']);?>
+											 if(h($userSpecificData['User']['gender']) == 1){
+												echo"Male";
+
+												}else{
+												echo"Female";
+												} ?>
                                             </div>
                                         </div>
                                         <hr />

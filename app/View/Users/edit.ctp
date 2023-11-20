@@ -17,7 +17,15 @@
 										echo $this->Form->input('email');
 										// echo $this->Form->input('password');
 										echo $this->Form->input('full_name');
-										echo $this->Form->input('gender');
+										echo $this->Form->input('gender', array(
+											'label' => 'Gender',
+											'type' => 'radio',
+											'options' => array(
+												'male' => 'Male',
+												'female' => 'Female',
+											),
+											'div' => false, // Remove the wrapping div
+										));
 										echo $this->Form->input('birthdate', [
 											'type' => 'text',
 											'id' => 'datepicker' // Set the desired ID value here

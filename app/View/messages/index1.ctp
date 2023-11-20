@@ -3,16 +3,9 @@
 
         <div class="headind_srch">
             <div class="recent_heading">
-                <h4>Recent</h4>
+                <h4>Conversations</h4>
             </div>
-            <div class="srch_bar">
-                <div class="stylish-input-group">
-                    <input type="text" class="search-bar" placeholder="Search">
-                    <span class="input-group-addon">
-                        <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
-                    </span>
-                </div>
-            </div>
+        
         </div>
         
         <div class="inbox_chat">
@@ -32,12 +25,15 @@
                             </h5>
                            
                             <?php echo $this->HTML->link('Check conversation?', array('controller' => 'messages', 'action' => 'index', $latestMessage['User']['id']));?>
-                            <a><?php echo $this->Form->postLink('Delete Convo?', array('controller' => 'messages', 'action' =>'deleteAll', $latestMessage['User']['id']), array('confirm' => 'are you sure you want to delete this conversation?'));?></a>
+                            <a href="#" class="delete-convo" data-id="<?php echo $latestMessage['User']['id']; ?>">Delete Convo?</a>
+                           
                         </div>
                     </div>
                 
             </div>
             <?php endforeach; ?>
+
+            
         </div>
         
 
@@ -75,3 +71,4 @@
         </li>
     </ul>
 </div>
+

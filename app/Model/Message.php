@@ -71,12 +71,13 @@ class Message extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		// 'Recipient' => array(
-		// 	'className' => 'Recipient',
-		// 	'foreignKey' => 'recipient_id',
-		// 	'conditions' => '',
-		// 	'fields' => '',
-		// 	'order' => ''
-		// )
+		'Sender' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id'
+        ),
+		'Recipient' => array(
+            'className' => 'User',
+            'foreignKey' => 'recipient_id'
+        )
 	);
 }

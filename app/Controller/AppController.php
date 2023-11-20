@@ -39,11 +39,12 @@ class AppController extends Controller {
             'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
             'authenticate' => array(
                 'Form' => array(
-                    'fields' => array('username' => 'email') // Use 'username' for authentication
+                    'fields' => array('username' => 'email', 'password' => 'password', 'last_login' => 'last_login') // Use 'username' for authentication
                 )
             ),
         ),
         'Session'
+       
     );
 
 

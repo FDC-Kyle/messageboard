@@ -79,6 +79,8 @@ class UsersController extends AppController {
 
 		if($this->request->is('post')){
 			if($this->Auth->login()){
+				$this->User->id = $this->Auth->user('id');
+            	$this->User->saveField('last_login', date('Y-m-d H:i:s'));
 				return $this->redirect($this->Auth->redirectUrl());
 			} else{
 				$this->Session->setFlash('invalid email or Password!');
@@ -115,6 +117,9 @@ class UsersController extends AppController {
 		if (Security::hash($this->request->data['User']['password'], null, true) === $userSpecificData['User']['password']) {
 			$this->Flash->success(__('Old password matched!'));
 
+			$this->Session->write('change_pass_successful', true);
+
+
 			return $this->redirect(['controller' => 'users', 'action' => 'password_match']);
 
 		} else {
@@ -124,6 +129,13 @@ class UsersController extends AppController {
 
 	}
 	public function password_match($id = null) {
+		$changePassSuccessful = $this->Session->read('change_pass_successful');
+	
+		if (!$changePassSuccessful) {
+			// $this->Flash->error(__('You do not have permission to access this page.'));
+			return $this->redirect(['controller' => 'users', 'action' => 'index']);
+		}
+	
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->request->data['User']['password'] === $this->request->data['User']['password_confirmation']) {
 				$id = $this->Auth->user('id'); // Get the id of the logged-in user
@@ -134,8 +146,9 @@ class UsersController extends AppController {
 				$this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
 	
 				if ($this->User->save($this->request->data)) {
-					return $this->redirect(['controller' => 'users', 'action' => 'index']);
 					$this->Flash->success(__('Password has been changed.'));
+					$this->Session->delete('change_pass_successful'); // Clear the session variable
+					return $this->redirect(['controller' => 'users', 'action' => 'index']);
 				} else {
 					$this->Flash->error(__('User not saved!'));
 				}
@@ -144,6 +157,7 @@ class UsersController extends AppController {
 			}
 		}
 	}
+	
 	
 	
 
@@ -157,6 +171,8 @@ class UsersController extends AppController {
 
 		$this->Auth->allow('add');
 
+
+
 	
 	
 	}
@@ -168,13 +184,7 @@ class UsersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
-		if (!$this->User->exists($id)) {
-			throw new NotFoundException(__('Invalid user'));
-		}
-		$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-		$this->set('user', $this->User->find('first', $options));
-	}
+
 
 /**
  * add method
@@ -184,8 +194,14 @@ class UsersController extends AppController {
 public function add() {
     if ($this->request->is('post')) {
         $existingUser = $this->User->findByEmail($this->request->data['User']['email']);
-        
-        if ($existingUser) {
+
+		
+		$username = $this->request->data['User']['username'];
+        if (strlen($username) < 5) {
+            // Username is too short, set flash message
+            $this->Session->setFlash('Username must be at least 5 characters long.');
+        }
+        elseif ($existingUser) {
             $this->Flash->error(__('Email address already exists. Please use a different email address.'));
         } elseif ($this->request->data['User']['password'] === $this->request->data['User']['password_confirmation']) {
             $this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
@@ -347,5 +363,37 @@ public function edit($id = null) {
 			$this->Flash->error(__('The user could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
+	}
+
+	public function profile($id = null){
+
+		
+		// Check authentication status
+		$isLoggedIn = $this->Auth->user() ? true : false;
+
+		// Get user data if logged in
+		$userData = $this->Auth->user();
+
+		
+			// Find user data based on the email address
+		
+	
+		// Pass data to the view
+		$this->set(compact('isLoggedIn', 'userData'));
+	   // $this->User->recursive = 0;
+	   // $this->set('users', $this->Paginator->paginate());
+	   
+
+	   $id1 = $this->request->params['pass'][0] ?? null;
+
+	   $userSpecificData = $this->User->find('first', array(
+		'conditions' => array(
+		'User.id' => $id1
+			)
+		));
+
+	   // Pass the user-specific data to the view
+	   $this->set('userSpecificData', $userSpecificData);
+
 	}
 }

@@ -34,6 +34,10 @@ class User extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'unique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This email is already in use. Please choose a different one.',
+			),
 		),
 		'password' => array(
 			'notBlank' => array(
@@ -120,32 +124,32 @@ class User extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'Post' => array(
-			'className' => 'Post',
-			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'Topic' => array(
-			'className' => 'Topic',
-			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
+		// 'Post' => array(
+		// 	'className' => 'Post',
+		// 	'foreignKey' => 'user_id',
+		// 	'dependent' => false,
+		// 	'conditions' => '',
+		// 	'fields' => '',
+		// 	'order' => '',
+		// 	'limit' => '',
+		// 	'offset' => '',
+		// 	'exclusive' => '',
+		// 	'finderQuery' => '',
+		// 	'counterQuery' => ''
+		// ),
+		// 'Topic' => array(
+		// 	'className' => 'Topic',
+		// 	'foreignKey' => 'user_id',
+		// 	'dependent' => false,
+		// 	'conditions' => '',
+		// 	'fields' => '',
+		// 	'order' => '',
+		// 	'limit' => '',
+		// 	'offset' => '',
+		// 	'exclusive' => '',
+		// 	'finderQuery' => '',
+		// 	'counterQuery' => ''
+		// )
 	);
 
 }
