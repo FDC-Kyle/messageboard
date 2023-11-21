@@ -9,7 +9,8 @@
     <?php
     
 echo $this->Form->input('user_id', array(
-    'class' => 's-example-basic-single', // This should match the class in your script
+    'class' => 'dropdown',
+    'style' => 'width: 220px;' // This should match the class in your script
 ));
 
     echo $this->Form->input('message', array('type'=>'text'));

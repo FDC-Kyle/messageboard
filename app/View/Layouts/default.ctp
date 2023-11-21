@@ -163,67 +163,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         });
     }
     </script>
-
-    <!-- <script>
-// Assume you have an array of messages
-var allMessages = [
-    "Message 1",
-    "Message 2",
-    // ... (more messages)
-    "Message 10",
-    "Message 1",
-    "Message 2",
-    // ... (more messages)
-    "Message 10",
-    "Message 1",
-    "Message 2",
-    // ... (more messages)
-    "Message 10",
-    "Message 1",
-    "Message 2",
-    // ... (more messages)
-    "Message 10",
-    "Message 1",
-    "Message 2",
-    // ... (more messages)
-    "Message 10",
-    // ... (more messages)
-];
-
-var messagesPerPage = 2;
-var currentPage = 1;
-
-// Function to display messages based on the current page
-function displayMessages() {
-    var startIndex = (currentPage - 1) * messagesPerPage;
-    var endIndex = startIndex + messagesPerPage;
-    
-    // Clear the existing messages
-    $('#messagesContainer').empty();
-
-    // Display messages for the current page
-    for (var i = startIndex; i < endIndex && i < allMessages.length; i++) {
-        $('#messagesContainer').append('<p>' + allMessages[i] + '</p>');
-    }
-}
-
-// Show More button click event
-$('#showMore').on('click', function() {
-    currentPage++;
-    displayMessages();
-});
-
-// Show Less button click event
-$('#showLess').on('click', function() {
-    if (currentPage > 1) {
-        currentPage--;
-        displayMessages();
-    }
-});
-
-// Initial display on page load
-displayMessages();
-</script> -->
     <script>
     $(document).ready(function() {
         <?php $userId = $this->Session->read('UserId');?>
@@ -271,32 +210,7 @@ displayMessages();
         var chatInterval;
         var interacting = false;
 
-        // Flag to track whether a message is being edited or hovered over
-
-
-
-        // var currentPage = 1;
-
-
-        // $('#show-more-btn').on('click', function() {
-        //     currentPage++;
-        //     loadMoreMessages(currentPage);
-        // });
-
-        // function loadMoreMessages(page) {
-        //     $.ajax({
-        //         type: 'GET',
-        //         url: baseUrl + 'messages/index/' + baseId + '/' + 'page:' +
-        //             page, // Explicitly pass the page parameter
-        //         success: function(data) {
-        //             $('#chat-container').append(data);
-        //         },
-        //         error: function() {
-        //             console.log('Error loading more messages.');
-        //         }
-        //     });
-        // }
-
+       
         function truncateText() {
     $(".message-content").each(function () {
         var content = $(this);
@@ -476,8 +390,9 @@ displayMessages();
     
 <script>
 $(document).ready(function() {
-    $('.s-example-basic-single').select2({
-        data: <?php echo json_encode(['results' => $data]); ?>,
+    var baseUrl = '<?php echo $this->Html->url('/'); ?>';
+    $('.dropdown').select2({
+        data: JSON.parse('<?php echo json_encode($data); ?>'),
         templateResult: formatResult,
         templateSelection: formatSelection
     });
@@ -486,20 +401,25 @@ $(document).ready(function() {
         if (!result.id) {
             return result.text;
         }
+        $imageUrl = baseUrl+'img/upload/'+result.image; 
+        $default_Image = baseUrl+'img/upload/default-placeholder-image.jpg';
 
-        var image = '/img/upload/default-placeholder-image.jpg'; // Replace this with the path to your default image
-        var option = $('<span><img src="' + image + '" class="select2-image img-flag" style="height: 22px"/> ' + result.text + '</span>');
-
+        var image = result.image ? $imageUrl : $default_Image; // Replace this with the path to your default image
+        var option = $('<span style="width: 220px;"><img src="' + image + '" class="select2-image img-flag" style="height: 60px; "/> ' + result.text + '</span>');
+        
         return option;
     }
 
-    function formatSelection(selection) {
-        if (!selection.id) {
-            return selection.text;
+    function formatSelection(result) {
+        if (!result.id) {
+            return result.text;
         }
 
-        var image = '/img/upload/default-placeholder-image.jpg'; // Replace this with the path to your default image
-        var selectedOption = $('<span><img src="/img/upload/default-placeholder-image.jpg" class="select2-image img-flag" style="height: 22px"/> ' + selection.text + '</span>');
+        $imageUrl = baseUrl+'img/upload/'+result.image; 
+        $default_Image = baseUrl+'img/upload/default-placeholder-image.jpg';
+
+        var image = result.image ? $imageUrl: $default_Image; // Replace this with the path to your default image
+        var selectedOption = $('<span style="width: 220px;"><img src="' + image + '" class="select2-image img-flag" style="height: 25px; "/> ' +  result.text + '</span>');
 
         return selectedOption;
     }

@@ -407,17 +407,58 @@ class MessagesController extends AppController {
 	public function add() {
 		
 		$userId = $this->Session->read('UserId');
-
-		$this->load_user();
-
 		
+		$id = $this->Auth->user('id');
 
-		$data = [
-			['id' => 1, 'text' => 'name', 'image' => 'OIP.png'],
-			// Add more user data as needed
-		];
+		$this->loadModel('User');
+		$users = $this->User->find('all', array(
+			'fields' => array('User.id', 'User.username', 'User.image'),
+			'conditions' => array('User.id !=' => $id),
+		));
+
+		$data = [];
+		foreach ($users as $key => $value) {
+
+			array_push($data, [
+				'id' => $value['User']['id'],
+				'text' => $value['User']['username'],
+				'image' => $value['User']['image'],
+			]);
+			
+		}
 		$this->set('data', $data);
+
 		
+		
+
+		$this->get_id();
+		
+	
+		// Check authentication status
+		$isLoggedIn = $this->Auth->user() ? true : false;
+
+		// Get user data if logged in
+		$userData = $this->Auth->user();
+
+		
+			// Find user data based on the email address
+		
+	
+		// Pass data to the view
+		$this->set(compact('isLoggedIn', 'userData'));
+	   // $this->User->recursive = 0;
+	   // $this->set('users', $this->Paginator->paginate());
+	   
+	   // Retrieve data specific to the logged-in user
+	   $email = $userData['email'];
+
+	   $userSpecificData = $this->User->find('first', array(
+		'conditions' => array(
+		'User.email' => $email
+			)
+		));
+		 // Pass the user-specific data to the view
+		 $this->set('userSpecificData', $userSpecificData);
 
 		if ($this->request->is('ajax')) {
 			$this->autoRender = false; // Disable the view rendering for AJAX requests
