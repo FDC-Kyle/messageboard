@@ -41,11 +41,6 @@ class MessagesController extends AppController {
     $this->set('users', $users);
     $this->get_id();
 
-
-
-				// Assuming $userData['email'] contains the email address you want to search for
-		
-
 	
 		// Check authentication status
 		$isLoggedIn = $this->Auth->user() ? true : false;
@@ -197,9 +192,6 @@ class MessagesController extends AppController {
 		
 		$this->set('latestMessages', $latestMessages);
 
-	
-	
-
 		
 	}
 
@@ -229,7 +221,6 @@ class MessagesController extends AppController {
 
 
 
-				// Assuming $userData['email'] contains the email address you want to search for
 		
 
 	
@@ -324,24 +315,6 @@ class MessagesController extends AppController {
 		$messages = $this->Paginator->paginate('Message');
 		$this->set('messages', $messages);
 
-		
-
-        // Your logic here, for example, you can use $newValue in your CakePHP code
-
-        // Send a response back to the client if needed
-      
-        
-
-
-
-		// $page = isset($this->request->params['named']['page']) ? $this->request->params['named']['page'] : 1;
-		// $page_final = ('page:'.$page);
-		// $this->Session->write('pageId', $page_final);
-	
-
-
-		
-
 
 		 // Set the layout to 'ajax'
 		 if ($this->request->is('ajax')) {
@@ -396,16 +369,12 @@ class MessagesController extends AppController {
 	public function load_user(){
 		$this->loadModel('User');
     $users = $this->User->find('list', array(
-        'fields' => array('User.id', 'User.username')
+        'fields' => array('User.id', 'User.username', 'User.image')
     ));
 
     $this->set('users', $users);
     $this->get_id();
 
-
-
-				// Assuming $userData['email'] contains the email address you want to search for
-		
 
 	
 		// Check authentication status
@@ -434,40 +403,49 @@ class MessagesController extends AppController {
 		 // Pass the user-specific data to the view
 		 $this->set('userSpecificData', $userSpecificData);
 	}
-public function add() {
-	
-	$userId = $this->Session->read('UserId');
 
-	$this->load_user();
-	
-
-    if ($this->request->is('ajax')) {
-        $this->autoRender = false; // Disable the view rendering for AJAX requests
-        $this->layout = 'ajax'; // Set the layout to 'ajax'
-
-        $this->Message->create();
+	public function add() {
 		
-		// $usId = $this->request->data['Message']['user_id'];
-		// $this->Session->write('usId', $usId);
-		// debug($usId);
-		// exit;
+		$userId = $this->Session->read('UserId');
+
+		$this->load_user();
+
 		
-	
-        if ($this->Message->save($this->request->data)) {
-			
-			
-			
-            $this->Flash->success(__('Message Sent!'));
-        } else {
-            $this->Flash->error(__('Error in sending message, please try again!'));
-        }
 
-        exit; // End the controller action for AJAX requests
-    }
+		$data = [
+			['id' => 1, 'text' => 'name', 'image' => 'OIP.png'],
+			// Add more user data as needed
+		];
+		$this->set('data', $data);
+		
 
-    
+		if ($this->request->is('ajax')) {
+			$this->autoRender = false; // Disable the view rendering for AJAX requests
+			$this->layout = 'ajax'; // Set the layout to 'ajax'
 
-}
+			$this->Message->create();
+			
+			// $usId = $this->request->data['Message']['user_id'];
+			// $this->Session->write('usId', $usId);
+			// debug($usId);
+			// exit;
+			
+		
+			if ($this->Message->save($this->request->data)) {
+				
+				
+				
+				$this->Flash->success(__('Message Sent!'));
+			} else {
+				$this->Flash->error(__('Error in sending message, please try again!'));
+			}
+
+			exit; // End the controller action for AJAX requests
+		}
+
+		
+
+	}
 
 
 /**
@@ -538,24 +516,5 @@ public function add() {
 			exit;
 		
 	}
-	// public function updateIsShownSender() {
-	// 	$this->autoRender = false; // Disable rendering a view
-	
-	// 	if ($this->request->is('ajax')) {
-	// 		$messageId = $this->request->data('messageId');
-	// 		$value = $this->request->data('value');
-	
-	// 		// Update the is_shown_sender field in the database
-	// 		// Adjust this part based on your CakePHP 2 model and database structure
-	// 		$this->message->updateAll(
-	// 			array('message.is_shown_sender' => $value),
-	// 			array('message.id' => $messageId)
-	// 		);
-	
-	// 		echo json_encode(['success' => true]);
-	// 	} else {
-	// 		echo json_encode(['success' => false]);
-	// 	}
-	// }
 
 }

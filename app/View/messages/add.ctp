@@ -5,13 +5,13 @@
 <div class="users index">
     <h2><?php echo __('Create Message'); ?></h2>
 <form id="messageForm">
+   
     <?php
-    echo $this->Form->input('user_id', array(
-        'class' => 's-example-basic-single',
-        'options' => $users,
-    ));
-    // debug($users);
-    // exit;
+    
+echo $this->Form->input('user_id', array(
+    'class' => 's-example-basic-single', // This should match the class in your script
+));
+
     echo $this->Form->input('message', array('type'=>'text'));
     echo $this->Form->input('recipient_id', array(
         'type' => 'hidden',
@@ -57,30 +57,3 @@
             </div>
     
 
-
-<!-- <script>
-function sendMessage() {
-    var formData = $('#messageForm').serialize(); // Serialize the form data
-    var baseUrl = '<?php echo $this->Html->url('/'); ?>';
-
-    $.ajax({
-        
-        type: 'POST',
-        url: baseUrl + '/messages/add',
-        data: formData,
-        dataType: 'json',
-        success: function(response) {
-            if (response.status === 'success') {
-                $('#response').html(response.message);
-            } else {
-                $('#response').html(response.message);
-            }
-        },
-        error: function() {
-            $('#response').html('Error sending message.');
-        }
-    });
-}
-</script>
-
-  -->

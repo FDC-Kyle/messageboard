@@ -95,12 +95,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         });
     });
     </script>
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
     // Initialize Select2 for the 'select2' class with search functionality
     $(document).ready(function() {
         $('.s-example-basic-single').select2();
     });
-    </script>
+    </script> -->
     <script>
     function sendMessage1() {
         var formData = $('#messageForm1').serialize(); // Serialize the form data
@@ -473,6 +473,39 @@ displayMessages();
         });
     });
     </script>
+    
+<script>
+$(document).ready(function() {
+    $('.s-example-basic-single').select2({
+        data: <?php echo json_encode(['results' => $data]); ?>,
+        templateResult: formatResult,
+        templateSelection: formatSelection
+    });
+
+    function formatResult(result) {
+        if (!result.id) {
+            return result.text;
+        }
+
+        var image = '/img/upload/default-placeholder-image.jpg'; // Replace this with the path to your default image
+        var option = $('<span><img src="' + image + '" class="select2-image img-flag" style="height: 22px"/> ' + result.text + '</span>');
+
+        return option;
+    }
+
+    function formatSelection(selection) {
+        if (!selection.id) {
+            return selection.text;
+        }
+
+        var image = '/img/upload/default-placeholder-image.jpg'; // Replace this with the path to your default image
+        var selectedOption = $('<span><img src="/img/upload/default-placeholder-image.jpg" class="select2-image img-flag" style="height: 22px"/> ' + selection.text + '</span>');
+
+        return selectedOption;
+    }
+});
+
+</script>
 
 
 

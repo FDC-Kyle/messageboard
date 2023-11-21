@@ -191,52 +191,49 @@ class UsersController extends AppController {
  *
  * @return void
  */
-public function add() {
-    if ($this->request->is('post')) {
-        $existingUser = $this->User->findByEmail($this->request->data['User']['email']);
+	public function add() {
+		if ($this->request->is('post')) {
+			$existingUser = $this->User->findByEmail($this->request->data['User']['email']);
 
-		
-		$username = $this->request->data['User']['username'];
-        if (strlen($username) < 5) {
-            // Username is too short, set flash message
-            $this->Session->setFlash('Username must be at least 5 characters long.');
-        }
-        elseif ($existingUser) {
-            $this->Flash->error(__('Email address already exists. Please use a different email address.'));
-        } elseif ($this->request->data['User']['password'] === $this->request->data['User']['password_confirmation']) {
-            $this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
+			
+			$username = $this->request->data['User']['username'];
+			if (strlen($username) < 5) {
+				// Username is too short, set flash message
+				$this->Session->setFlash('Username must be at least 5 characters long.');
+			}
+			elseif ($existingUser) {
+				$this->Flash->error(__('Email address already exists. Please use a different email address.'));
+			} elseif ($this->request->data['User']['password'] === $this->request->data['User']['password_confirmation']) {
+				$this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
 
-            $this->User->create();
+				$this->User->create();
 
-            if ($this->User->save($this->request->data)) {
-				$credentials = [
-				
-					'email' => $this->request->data['User']['email'], // or 'username' if using username as authentication field
-					'password' => $this->request->data['User']['password']
-				];
-				
-                $this->Flash->success(__('The user has been saved.'));
-                // Redirect to the thank you page
-				if($this->Auth->login($credentials)){
-
+				if ($this->User->save($this->request->data)) {
+					$id = $this->User->id;
+					$credentials = [
+						'id' => $id,
+						'email' => $this->request->data['User']['email'], // or 'username' if using username as authentication field
+						'password' => $this->request->data['User']['password']
+					];
 					
+					$this->Flash->success(__('The user has been saved.'));
+					// Redirect to the thank you page
+					if($this->Auth->login($credentials)){
 
+						return $this->redirect(['controller' => 'users', 'action' => 'thanks']);
+
+					}
 					
-
-					return $this->redirect(['controller' => 'users', 'action' => 'thanks']);
-
+					
+				} else {
+					$this->Flash->error(__('The user could not be saved. Please, try again.'));
 				}
-				
-                
-            } else {
-                $this->Flash->error(__('The user could not be saved. Please, try again.'));
-            }
-        } else {
-            $this->Flash->error(__('Passwords do not match. Please, try again.'));
-        }
-    }
+			} else {
+				$this->Flash->error(__('Passwords do not match. Please, try again.'));
+			}
+		}
 
-}
+	}
 
 
 
